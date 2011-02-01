@@ -5,7 +5,7 @@ var sys = require('sys');
 
 var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
 var nodester = function (username, password, basehost) {
-  if (typeof baseurl != 'undefined') this.basehost = basehost;
+  if (typeof basehost != 'undefined') this.basehost = basehost;
   else this.basehost = 'api.nodester.com';
   this.username = username;
   this.password = password;
