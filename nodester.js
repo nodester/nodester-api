@@ -74,6 +74,10 @@ nodester.prototype.user_create = function (user, pass, email, rsakey, coupon, cb
   }.bind(this));
 };
 
+nodester.prototype.user_delete = function (user, cb) {
+  this.del('user', { user: user }, cb);
+};
+
 nodester.prototype.user_setpass = function (newpass, cb) {
   this.put('user', { password: newpass }, cb);
 };
