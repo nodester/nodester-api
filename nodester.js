@@ -124,4 +124,18 @@ nodester.prototype.appnpm_uninstall = function (name, package, cb) {
   this.appnpm_handler(name, package, "uninstall", cb);
 };
 
+nodester.prototype.appdomain_handler = function (name, domain, action, cb) {
+  request({uri: this.baseurl + "appdomains", method: 'POST', headers: headers, body: querystring.stringify({appname: name, action: action, domain: domain})}, function (err, resp, body) {
+    cb(JSON.parse(body));
+  });
+};
+
+nodester.prototype.appdomain_add = function (name, domain, cb) {
+  this.appdomain_handler(name, domain, "add", cb);
+};
+
+nodester.prototype.appdomain_delete = function (name, domain, cb) {
+  this.appdomain_handler(name, domain, "delete", cb);
+};
+
 exports.nodester = nodester;
