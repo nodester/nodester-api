@@ -106,6 +106,12 @@ nodester.prototype.app_info = function (name, cb) {
   });
 };
 
+nodester.prototype.app_logs = function (name, cb) {
+  request({uri: this.baseurl + "applogs/" + name, method: 'GET', headers: headers}, function (err, response, body) {
+    cb(JSON.parse(body));
+  });
+};
+
 nodester.prototype.appnpm_handler = function (name, package, action, cb) {
   request({uri: this.baseurl + "appnpm", method: 'POST', headers: headers, body: querystring.stringify({appname: name, package: package, action: action})}, function (err, response, body) {
     cb(JSON.parse(body));
