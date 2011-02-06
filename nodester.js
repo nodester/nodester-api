@@ -106,6 +106,12 @@ nodester.prototype.app_info = function (name, cb) {
   });
 };
 
+nodester.prototype.app_logs = function (name, cb) {
+  request({uri: this.baseurl + "applogs/" + name, method: 'GET', headers: headers}, function (err, response, body) {
+    cb(JSON.parse(body));
+  });
+};
+
 nodester.prototype.appnpm_handler = function (name, package, action, cb) {
   request({uri: this.baseurl + "appnpm", method: 'POST', headers: headers, body: querystring.stringify({appname: name, package: package, action: action})}, function (err, response, body) {
     cb(JSON.parse(body));
@@ -122,6 +128,20 @@ nodester.prototype.appnpm_update = function (name, package, cb) {
 
 nodester.prototype.appnpm_uninstall = function (name, package, cb) {
   this.appnpm_handler(name, package, "uninstall", cb);
+};
+
+nodester.prototype.appdomain_handler = function (name, domain, action, cb) {
+  request({uri: this.baseurl + "appdomains", method: 'POST', headers: headers, body: querystring.stringify({appname: name, action: action, domain: domain})}, function (err, resp, body) {
+    cb(JSON.parse(body));
+  });
+};
+
+nodester.prototype.appdomain_add = function (name, domain, cb) {
+  this.appdomain_handler(name, domain, "add", cb);
+};
+
+nodester.prototype.appdomain_delete = function (name, domain, cb) {
+  this.appdomain_handler(name, domain, "delete", cb);
 };
 
 exports.nodester = nodester;
