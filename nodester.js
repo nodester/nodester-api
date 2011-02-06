@@ -45,19 +45,19 @@ function process_response(cb, errfn) {
 
 nodester.prototype.request = function(method, path, body, cb) {
   request({
-    uri: this.baseurl + path,
-  method: method,
-  body: querystring.stringify(body),
-  headers: headers
-  },
-  process_response(cb)
+      uri: this.baseurl + path,
+      method: method,
+      body: querystring.stringify(body),
+      headers: headers
+    },
+    process_response(cb)
   );
 }
 
-nodester.prototype.get = function(path, cb) { this.request('GET', path, null, cb); }
-nodester.prototype.post = function(path, body, cb) { this.request('POST', path, body, cb); }
-nodester.prototype.put = function(path, body, cb) { this.request('PUT', path, body, cb); }
-nodester.prototype.del = function(path, body, cb) { this.request('DELETE', path, body, cb); }
+nodester.prototype.get =  function(path, cb)       { this.request('GET',    path, null, cb); }
+nodester.prototype.post = function(path, body, cb) { this.request('POST',   path, body, cb); }
+nodester.prototype.put =  function(path, body, cb) { this.request('PUT',    path, body, cb); }
+nodester.prototype.del =  function(path, body, cb) { this.request('DELETE', path, body, cb); }
 
 nodester.prototype.coupon_request = function (email, cb) {
   this.post('coupon', { email: email }, cb)
