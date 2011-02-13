@@ -4,9 +4,11 @@ var fs = require('fs');
 var sys = require('sys');
 
 var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-var nodester = function (username, password, basehost) {
+var nodester = function (username, password, basehost, secure) {
   if (typeof basehost != 'undefined') this.basehost = basehost;
   else this.basehost = 'api.nodester.com';
+  if (typeof secure != 'undefined' && secure == true) this.proto = 'https://';
+  else this.proto = 'http://';
   this.username = username;
   this.password = password;
   if (typeof this.username != 'undefined' && typeof this.password != 'undefined' && this.username.length > 0 && this.password.length > 0) {
@@ -14,7 +16,7 @@ var nodester = function (username, password, basehost) {
   } else {
     var userbits = "";
   }
-  this.baseurl = "http://" + userbits + this.basehost + "/";
+  this.baseurl = this.proto + userbits + this.basehost + "/";
 };
 
 function process_response(cb, errfn) {
