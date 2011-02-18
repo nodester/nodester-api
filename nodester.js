@@ -162,4 +162,8 @@ nodester.prototype.appdomain_delete = function (name, domain, cb) {
   this.appdomain_handler(name, domain, "delete", cb);
 };
 
+nodester.prototype.appdomains = function(cb) {
+  this.get('appdomains', cb);
+};
+
 exports.nodester = nodester;
