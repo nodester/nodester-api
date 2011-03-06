@@ -126,6 +126,10 @@ nodester.prototype.app_delete = function (name, cb) {
   this.del('app', { appname: name }, cb);
 };
 
+nodester.prototype.app_gitreset = function (name, cb) {
+  this.del('gitreset', { appname: name }, cb);
+};
+
 nodester.prototype.app_info = function (name, cb) {
   this.get('app/' + name, cb);
 };
