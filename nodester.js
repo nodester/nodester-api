@@ -177,4 +177,12 @@ nodester.prototype.appdomains = function(cb) {
   this.get('appdomains', cb);
 };
 
+nodester.prototype.password_reset_token = function(some_user, cb) {
+  this.post('reset_password', { user: some_user }, cb);
+};
+
+nodester.prototype.password_reset_setpass = function(token, a_password, cb) {
+  this.put('reset_password/'+token, { password: a_password }, cb);
+};
+
 exports.nodester = nodester;
