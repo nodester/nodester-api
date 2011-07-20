@@ -50,7 +50,8 @@ nodester.prototype.request = function(method, path, body, cb) {
       uri: this.baseurl + path,
       method: method,
       body: querystring.stringify(body),
-      headers: headers
+      headers: headers,
+      proxy: process.env.http_proxy
     },
     process_response(cb)
   );
