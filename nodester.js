@@ -101,11 +101,7 @@ nodester.prototype.status = function (cb) {
   this.get('status', cb);
 };
 
-/*
-nodester.prototype.app_set_start = function (name, start, cb) {
-  
-};
-*/
+
 
 nodester.prototype.app_running = function (name, running, cb) {
   this.put('app', { appname: name, running: running }, cb);
@@ -155,14 +151,6 @@ nodester.prototype.appnpm_uninstall = function (name, package, cb) {
   this.appnpm_handler(name, package, "uninstall", cb);
 };
 
-/*
-nodester.prototype.appdomain_handler = function (name, domain, action, cb) {
-  this.post('appdomains', { appname: name, action: action, domain: domain }, cb);
-};
-nodester.prototype.appdomain_delete = function (name, domain, cb) {
-  this.appdomain_handler(name, domain, "delete", cb);
-};
-*/
 
 nodester.prototype.appdomain_add = function (name, domain, cb) {
     this.post('appdomains', { appname: name, domain: domain }, cb);
@@ -177,12 +165,12 @@ nodester.prototype.appdomains = function(cb) {
   this.get('appdomains', cb);
 };
 
-nodester.prototype.password_reset_token = function(some_user, cb) {
+nodester.prototype.reset_password_token = function(some_user, cb) {
   this.post('reset_password', { user: some_user }, cb);
 };
 
-nodester.prototype.password_reset_setpass = function(token, a_password, cb) {
-  this.put('reset_password/'+token, { password: a_password }, cb);
+nodester.prototype.reset_password_setpass = function(token, a_password, cb) {
+  this.put('reset_password/' + token, { password: a_password }, cb);
 };
 
 exports.nodester = nodester;
