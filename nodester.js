@@ -36,10 +36,10 @@ function process_response(cb, errfn) {
       };
       data = body;
     }
-    if (errfn) {
-      if (!err) err = errfn(data);
-    } else {
-      if (!err && data.status && !/^success/.exec(data.status)) err = {
+    if (errfn && !err) {
+      err = errfn(data);
+    } else if (!err && data.status && !data.message && !/^success/.exec(data.status)) {
+      err = {
         message: data.status
       }
     }
@@ -47,10 +47,12 @@ function process_response(cb, errfn) {
       if (err) {
         err.code = errCode;
         err.message = '[HTTP ' + errCode + '] ' + err.message;
-      } else err = {
-        code: errCode,
-        message: "HTTP Error " + errCode
-      };
+      } else {
+        err = {
+          code: errCode,
+          message: "HTTP Error " + errCode
+        };
+      }
     }
     cb(err, data);
   }
