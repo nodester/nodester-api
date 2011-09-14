@@ -54,7 +54,8 @@ function process_response(cb, errfn) {
         };
       }
     }
-    cb(err, data);
+    original = {body: body, response: response};
+    cb(err, data, original);
   }
 }
 
