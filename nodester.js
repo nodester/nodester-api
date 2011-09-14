@@ -54,7 +54,7 @@ function process_response(cb, errfn) {
         };
       }
     }
-    original = {body: body, response: response};
+    original = {body: body, response: response.statusCode};
     cb(err, data, original);
   }
 }
