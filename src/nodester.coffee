@@ -55,7 +55,7 @@ class Nodester
   app_delete: (name, cb) -> @del "app", appname: name, cb
   app_gitreset: (name, cb) -> @del "gitreset", appname: name, cb
   app_info: (name, cb) -> @get "app/#{ name }", cb
-  app_logs: (name, cb) -> @get "applogs#{ name }", cb
+  app_logs: (name, cb) -> @get "applogs/#{ name }", cb
   
   appnpm_handler: (name, package, action, cb) -> @post "appnpm", {appname: name, package: package, action: action}, cb
   appnpm_install: (name, package, cb) -> @appnpm_handler name, package, "install", cb
