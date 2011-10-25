@@ -1,0 +1,91 @@
+request = require 'request'
+querystring = require 'querystring'
+fs = require 'fs'
+
+class Nodester 
+  constructor: (@username, @password, @basehost, @secure) ->
+    @basehost ?= 'api.nodester.com'
+    @protocol = if @secure then 'https://' else 'http://'
+    @baseurl = "#{ @protocol }#{ username }:#{ @password }@#{ basehost }/"
+    
+  request: (method, path, body, cb) ->
+    req = 
+      uri: @baseurl + path
+      method: method
+      body: querystring.stringify(body)
+      headers: 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      proxy: process.env.http_proxy
+      
+    request req, handleResponse cb
+    
+  get: (path, cb) -> @request "GET", path, null, cb
+  post: (path, body, cb) -> @request "POST", path, body, cb
+  put: (path, body, cb) -> @request "PUT", path, body, cb
+  del: (path, body, cb) -> @request "DELETE", path, body, cb
+  
+  status: (cb) -> @get "status", cb
+  coupon_request: (email, cb) -> @post "coupon", {email: email}, cb
+  
+  user_delete = (user, cb) -> @del "user", user: user, cb
+  user_create: (user, pass, email, rsakey, coupon, cb) ->
+    rsadata = fs.readFileSync rsadata
+    return cb message: "No RSA key found in #{ rsakey }" unless rsadata
+    return cb message: "Invalid SSH key file." unless rsadata.length > 40
+    postData =
+      user: user
+      password: pass
+      email: email
+      coupon: coupon
+      rsakey: rsadata
+    @post "user", postData, cb
+    
+  user_sendtoken: (some_user, cb) -> @post "reset_password", {user: some_user}, cb
+  user_setpass: (token, a_password, cb) -> @put "reset_password/#{ token }", {password: a_password}, cb
+  user_setkey: (rsakey, cb) -> @put "user", rsakey: rsakey, cb
+  apps_list: (cb) -> @get "apps", cb
+
+  app_create: (name, start, cb) -> @post "app", {appname: name, start: start}, cb
+  
+  app_running: (name, running, cb) -> @put "app", {appname: name, running: running}, cb
+  app_start: (name, cb) -> @app_running name, "true", cb
+  app_restart: (name, cb) -> @app_running name, "restart", cb
+  app_stop: (name, cb) -> @app_running name, "false", cb
+  
+  app_delete: (name, cb) -> @del "app", appname: name, cb
+  app_gitreset: (name, cb) -> @del "gitreset", appname: name, cb
+  app_info: (name, cb) -> @get "app/#{ name }", cb
+  app_logs: (name, cb) -> @get "applogs#{ name }", cb
+  
+  appnpm_handler: (name, package, action, cb) -> @post "appnpm", {appname: name, package: package, action: action}, cb
+  appnpm_install: (name, package, cb) -> @appnpm_handler name, package, "install", cb
+  appnpm_update: (name, package, cb) -> @appnpm_handler name, package, "update", cb
+  appnpm_uninstall: (name, package, cb) -> @appnpm_handler name, package, "uninstall", cb
+  
+  appdomain_add: (name, domain, cb) -> @post "appdomains", {appname: name, domain: domain}, cb
+  appdomain_delete: (name, domain, cb) -> @del "appdomains", {appname: name, domain: domain}, cb
+
+  appdomains: (cb) -> @get "appdomains", cb
+  
+handleResponse = (cb) ->
+  return (err, res, body) =>  
+    errCode = res.statusCode unless res.statusCode < 400
+    if body?
+      try
+        success = JSON.parse body
+      catch e
+        errMessage = body
+        errCause = "JSON Parse error!"
+
+    if errCode then errCause = "HTTP Error #{ errCode } returned."
+    if success?.message and not /^success/.exec success?.status then errCause = success.message
+    unless body then errCause ?= "No response received."
+    
+    if errCause
+      error = {}
+      error.code = errCode
+      error.message = "Fatal Error! API Response: #{ body }\nReason: #{ errCause }"
+       
+    cb error, success, {response: body, errorCode: errCode}
+      
+module.exports.nodester = Nodester
