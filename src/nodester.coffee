@@ -77,7 +77,7 @@ handleResponse = (cb) ->
         errCause = "JSON Parse error!"
 
     if errCode then errCause = "HTTP Error #{ errCode } returned."
-    if success? and success.message? and success.status? and not /^success/.exec success.status then errCause = success.message
+    if success?.message? and success?.status? and not /^success/.exec success.status then errCause = success.message
     errCause ?= "No response received." unless body
     
     if errCause
