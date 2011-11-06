@@ -1,7 +1,7 @@
 {
    "name":"nodester-api",
    "description":"A library to interact with Nodester",
-   "version":"0.1.16",
+   "version":"0.1.17",
    "homepage":"http://nodester.com/",
    "repository":"git://github.com/nodester/nodester-api.git",
    "author":"Contra <contra@nodester.com>",

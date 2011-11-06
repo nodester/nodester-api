@@ -69,17 +69,16 @@ class Nodester
   
 handleResponse = (cb) ->
   return (err, res, body) =>  
-    errCode = res.statusCode unless res.statusCode < 400
+    errCode = res.statusCode if res? and res.statusCode > 400
     if body?
       try
         success = JSON.parse body
       catch e
-        errMessage = body
         errCause = "JSON Parse error!"
 
     if errCode then errCause = "HTTP Error #{ errCode } returned."
-    if success?.message and not /^success/.exec success?.status then errCause = success.message
-    unless body then errCause ?= "No response received."
+    if success? and success.message? and success.status? and not /^success/.exec success.status then errCause = success.message
+    errCause ?= "No response received." unless body
     
     if errCause
       error = {}
