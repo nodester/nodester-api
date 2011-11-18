@@ -59,6 +59,7 @@ class Nodester
   
   appnpm_handler: (name, package, action, cb) -> @post "appnpm", {appname: name, package: package, action: action}, cb
   appnpm_install: (name, package, cb) -> @appnpm_handler name, package, "install", cb
+  appnpm_list: (name, cb) -> @appnpm_handler name, "", "list", cb # TODO: Test
   appnpm_update: (name, package, cb) -> @appnpm_handler name, package, "update", cb
   appnpm_uninstall: (name, package, cb) -> @appnpm_handler name, package, "uninstall", cb
   
@@ -85,6 +86,6 @@ handleResponse = (cb) ->
       error.code = errCode
       error.message = "Fatal Error! API Response: #{ body }\nReason: #{ errCause }"
        
-    cb error, success, {response: body, errorCode: errCode}
+    cb? error, success, {response: body, errorCode: errCode}
       
 module.exports.nodester = Nodester
