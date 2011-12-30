@@ -27,7 +27,7 @@ class Nodester
   status: (cb) -> @get "status", cb
   coupon_request: (email, cb) -> @post "coupon", {email: email}, cb
   
-  user_delete = (user, cb) -> @del "user", user: user, cb
+  user_delete = (user, cb) -> @del "user/#{user}", cb
   user_create: (user, pass, email, rsakey, coupon, cb) ->
     rsadata = fs.readFileSync rsadata
     return cb message: "No RSA key found in #{ rsakey }" unless rsadata
@@ -52,10 +52,10 @@ class Nodester
   app_restart: (name, cb) -> @app_running name, "restart", cb
   app_stop: (name, cb) -> @app_running name, "false", cb
   
-  app_delete: (name, cb) -> @del "app", appname: name, cb
-  app_gitreset: (name, cb) -> @del "gitreset", appname: name, cb
-  app_info: (name, cb) -> @get "app/#{ name }", cb
-  app_logs: (name, cb) -> @get "applogs/#{ name }", cb
+  app_delete: (name, cb) -> @del "app/#{name}", cb
+  app_gitreset: (name, cb) -> @del "gitreset/#{name}", cb
+  app_info: (name, cb) -> @get "app/#{name}", cb
+  app_logs: (name, cb) -> @get "applogs/#{name}", cb
   
   appnpm_handler: (name, package, action, cb) -> @post "appnpm", {appname: name, package: package, action: action}, cb
   appnpm_install: (name, package, cb) -> @appnpm_handler name, package, "install", cb
