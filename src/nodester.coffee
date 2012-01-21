@@ -10,7 +10,7 @@ class Nodester
     
   request: (method, path, body, cb) ->
     req = 
-      uri: @baseurl + path
+      uri: encodeURIComponent(@baseurl + path)
       method: method
       body: querystring.stringify(body)
       headers: 
