@@ -1,16 +1,17 @@
 request = require 'request'
 querystring = require 'querystring'
 fs = require 'fs'
+encode = encodeURIComponent
 
 class Nodester 
   constructor: (@username, @password, @basehost, @secure) ->
     @basehost ?= 'api.nodester.com'
     @protocol = if @secure then 'https://' else 'http://'
-    @baseurl = "#{ @protocol }#{ username }:#{ @password }@#{ basehost }/"
+    @baseurl = "#{@protocol}#{encode(username)}:#{encode(@password)}@#{basehost}/"
     
   request: (method, path, body, cb) ->
     req = 
-      uri: encodeURIComponent(@baseurl + path)
+      uri: encodeUri(@baseurl + path)
       method: method
       body: querystring.stringify(body)
       headers: 
