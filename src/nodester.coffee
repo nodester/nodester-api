@@ -11,13 +11,13 @@ class Nodester
     
   request: (method, path, body, cb) ->
     req = 
-      uri: encodeURI(@baseurl + path)
+      uri: @baseurl + encodeURI(path)
       method: method
       body: querystring.stringify(body)
       headers: 
         'Content-Type': 'application/x-www-form-urlencoded'
       proxy: process.env.http_proxy
-      
+    console.log req if process.env.debug?
     request req, handleResponse cb
     
   get: (path, cb) -> @request "GET", path, null, cb
