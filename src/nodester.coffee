@@ -30,7 +30,7 @@ class Nodester
   
   user_delete = (user, cb) -> @del "user/#{user}", cb
   user_create: (user, pass, email, rsakey, coupon, cb) ->
-    rsadata = fs.readFileSync rsadata
+    rsadata = fs.readFileSync rsakey
     return cb message: "No RSA key found in #{ rsakey }" unless rsadata
     return cb message: "Invalid SSH key file." unless rsadata.length > 40
     postData =
