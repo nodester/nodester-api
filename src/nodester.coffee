@@ -46,14 +46,14 @@ class Nodester
   user_setkey: (rsakey, cb) -> @put "user", rsakey: rsakey, cb
   apps_list: (cb) -> @get "apps", cb
 
-  app_create: (name, start, cb) -> @post "app", {appname: name, start: start}, cb
+  app_create: (name, start, cb) -> @post "apps", {appname: name, start: start}, cb
   
-  app_running: (name, running, cb) -> @put "app", {appname: name, running: running}, cb
+  app_running: (name, running, cb) -> @put "apps/#{name}", {running: running}, cb
   app_start: (name, cb) -> @app_running name, "true", cb
   app_restart: (name, cb) -> @app_running name, "restart", cb
   app_stop: (name, cb) -> @app_running name, "false", cb
   
-  app_delete: (name, cb) -> @del "app/#{name}", cb
+  app_delete: (name, cb) -> @del "apps/#{name}", cb
   app_gitreset: (name, cb) -> @del "gitreset/#{name}", cb
   app_info: (name, cb) -> @get "app/#{name}", cb
   app_logs: (name, cb) -> @get "applogs/#{name}", cb
