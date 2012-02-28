@@ -68,6 +68,10 @@ class Nodester
   appdomain_delete: (name, domain, cb) -> @del "appdomains", {appname: name, domain: domain}, cb
 
   appdomains: (cb) -> @get "appdomains", cb
+
+  env_set: (name, key, value, cb) -> @put "env", {appname: name, key: key, value: value}, cb
+  env_delete: (name, key, cb) -> @del "env/#{escape(name)}/#{escape(key)}", cb
+  env_get: (name, cb) -> @get "env/#{escape(name)}", cb
   
 handleResponse = (cb) ->
   return (err, res, body) =>  
