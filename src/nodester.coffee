@@ -49,6 +49,7 @@ class Nodester
   app_create: (name, start, cb) -> @post "apps", {appname: name, start: start}, cb
   
   app_running: (name, running, cb) -> @put "apps/#{name}", {running: running}, cb
+  app_edit: (name, file, cb) -> @put "apps/#{name}", {start: file}, cb
   app_start: (name, cb) -> @app_running name, "true", cb
   app_restart: (name, cb) -> @app_running name, "restart", cb
   app_stop: (name, cb) -> @app_running name, "false", cb
@@ -58,11 +59,11 @@ class Nodester
   app_info: (name, cb) -> @get "app/#{name}", cb
   app_logs: (name, cb) -> @get "applogs/#{name}", cb
   
-  appnpm_handler: (name, package, action, cb) -> @post "appnpm", {appname: name, package: package, action: action}, cb
-  appnpm_install: (name, package, cb) -> @appnpm_handler name, package, "install", cb
+  appnpm_handler: (name, pack, action, cb) -> @post "appnpm", {appname: name, package: pack, action: action}, cb
+  appnpm_install: (name, pack, cb) -> @appnpm_handler name, pack, "install", cb
   appnpm_list: (name, cb) -> @appnpm_handler name, "", "list", cb # TODO: Test
-  appnpm_update: (name, package, cb) -> @appnpm_handler name, package, "update", cb
-  appnpm_uninstall: (name, package, cb) -> @appnpm_handler name, package, "uninstall", cb
+  appnpm_update: (name, pack, cb) -> @appnpm_handler name, pack, "update", cb
+  appnpm_uninstall: (name, pack, cb) -> @appnpm_handler name, pack, "uninstall", cb
   
   appdomain_add: (name, domain, cb) -> @post "appdomains", {appname: name, domain: domain}, cb
   appdomain_delete: (name, domain, cb) -> @del "appdomains", {appname: name, domain: domain}, cb
